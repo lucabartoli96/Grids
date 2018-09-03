@@ -4,13 +4,26 @@
         <meta charset="utf-8"/>
         <script type="text/javascript" src="grid.js"></script>
         <script type="text/javascript" src="main.js"></script>
+        <link type="text/css" rel="stylesheet" href="layout.css"/>
     </head>
     <body>
         <form>
+          <div class="group">
             <input type="number" name="n"/>
+            <label for="n">Rows</label>
+            <div class="bar"></div>
+          </div>
+          <div class="group">
             <input type="number" name="m"/>
+            <label for="m">Cols</label>
+            <div class="bar"></div>
+          </div>
+          <div class="group">
             <input type="number" name="k"/>
-            <input type="range" name="pixels" min="5" max="35" value="20">
+            <label for="k">Border</label>
+            <div class="bar"></div>
+          </div>
+          <input type="range" name="pixels" min="5" max="35" value="20">
         </form>
         <p id="result">
         </p>
@@ -18,4 +31,3 @@
         </canvas>
     </body>
 </html>
-
