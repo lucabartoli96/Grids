@@ -1,6 +1,6 @@
 
 var Grid = (function() {
-    
+
     var pow = Math.pow,
         sqrt = Math.sqrt,
         abs = Math.abs,
@@ -10,254 +10,210 @@ var Grid = (function() {
         W = 20,
         Z = 20,
         DEFAULT_STYLE = undefined;
-    
+
     var define = Object.defineProperty;
-    
-    function x_med(n) {
-        return floor((n-1)/2);
-    }
-    
-    function y1(m, n, k) {
-        //return floor((k*(m-k)-1)/(m-k+1));
-        //return round(k*(2*m-k-1)/(2*m));
-        return floor(k/2);
-    }
-       
-    function y2(m, n, k) {
-        //return k-1;
-        //return round((1 + k + m)/2 + (k*n*(1 + k - m))/(-1 + 2*m*n + pow(n, 2)));
-	return Math.min(k-1, floor(m/2));
-    }
-    
-    function euclid(k) {
-        
-        return floor((k-1)/2);
-    }
-    
-    function manhattan(m, k) {
-        
-        return floor((m - k)/2) + k - 1;
-    }
-    
+
     function draw(canvas, ctx, m, n, k, median, w, pixels) {
-        
+
         canvas.width = 2*Z + w * m;
         canvas.height = 2*Z + w * n;
-        
+
         var bottom = pixels(n, m);
-        
+
         ctx.beginPath();
-        
+
         for (let i = 0; i <= n; i++) {
-            
-            let p = pixels(i, 0);  
-            
+
+            let p = pixels(i, 0);
+
             if (i != n) {
                 ctx.strokeText("" + i, 0, p.y + (13*w)/20);
             }
-                  
+
             ctx.moveTo(p.x, p.y);
             ctx.lineTo(bottom.x, p.y);
         }
-        
+
         for (let j = 0; j <= m ; j++) {
-            
+
             let p = pixels(0, j);
-            
+
             if (j != m) {
                 ctx.strokeText("" + j, p.x + (6*w/20), (9*w)/20);
             }
-            
+
             ctx.moveTo(p.x, p.y);
             ctx.lineTo(p.x, bottom.y);
-            
+
         }
-        
-        x_med_val = x_med(n);
-        
+
         ctx.stroke();
-        
-        ctx.fillStyle = "rgba(255, 0, 0, 0.3)";
-        
-        var y_range_start = y1(m, n, k);
-        var range_size = y2(m, n, k) - y_range_start + 1;
-        
-        var range_start = pixels(x_med_val, y_range_start);
-        
-        ctx.fillRect(range_start.x, range_start.y, range_size*w, w);
-        
-        ctx.fillStyle = "rgba(0, 0, 255, 0.3)";
-        
-        var med_e = pixels(x_med_val, euclid(k)),
-            med_m = pixels(x_med_val, manhattan(m, k));
-        
-        ctx.fillRect(med_e.x, med_e.y, w, w);
-        ctx.fillRect(med_m.x, med_m.y, w, w);
-        
+
+        // k^th column
         ctx.fillStyle = "rgba(0, 0, 0, 0.3)";
         var k_column = pixels(0, k);
         ctx.fillRect(k_column.x, k_column.y, w, n*w);
-        
+
+        // EM-median
         var median_pixels = pixels(median.i, median.j);
         ctx.fillStyle = "rgba(0, 0, 0, 0.5)";
         ctx.fillRect(median_pixels.x, median_pixels.y, w, w);
-        
+
         ctx.fillStyle = DEFAULT_STYLE;
     }
-    
+
     function highlight(ctx, i, j, w, pixels) {
-        
+
         ctx.fillStyle = "rgba(0, 0, 0, 0.3)";
         let p = pixels(i, j);
         ctx.fillRect(p.x, p.y, w, w);
         ctx.fillStyle = DEFAULT_STYLE;
-        
+
     }
-    
+
     function _Grid(_canvas, _n, _m, _k, _median, _w) {
-        
+
         _n = _n || 0;
         _m = _m || 0;
         _k = _k || 0;
         _median = _median || undefined;
         _w = _w || W;
-        
-        
+
+
         var _move_callbacks = [],
             ctx = _canvas.getContext("2d");
-        
-        
+
         DEFAULT_STYLE = ctx.fillStyle;
-        
+
         define(this, "canvas", {
             writable: false,
             value: _canvas
         });
-        
+
         define(this, "n", {
             set: function(n) {
                 _n = n;
                 _median = undefined;
                 invalidate();
-                
-            }, 
+
+            },
             get: function() {
                 return _n;
             }
         });
-        
+
         define(this, "m", {
             set: function(m) {
                 _m = m;
                 _median = undefined;
                 invalidate();
-                
-            }, 
+
+            },
             get: function() {
                 return _m;
             }
         });
-        
+
         define(this, "k", {
             set: function(k) {
                 _k = k;
                 _median = undefined;
                 invalidate();
-                
-            }, 
+
+            },
             get: function() {
                 return _k;
             }
         });
-        
+
         define(this, "median", {
             set: function(median) {
                 _median = median;
                 invalidate();
-                
-            }, 
+
+            },
             get: function() {
                 return _median;
             }
         });
-        
-        
+
+
         define(this, "w", {
             set: function(w) {
                 if (w >= 5 && w <= 35) {
                     _w = w;
                 }
                 invalidate();
-            }, 
+            },
             get: function() {
                 return _w;
             }
         });
-        
-        
+
+
         this.addEventListener = function(evt, callback) {
-            
+
             if (evt == "move") {
                 _move_callbacks.push(callback);
             }
         }
-        
-        
+
+
         indexes = function(x, y) {
-            
+
             var canvas_top = _canvas.getBoundingClientRect().top,
                 canvas_left = _canvas.getBoundingClientRect().left;
-            
+
             x -= canvas_left + Z;
             y -= canvas_top + Z;
-            
+
             var i = floor(y/_w),
                 j = floor(x/_w);
-            
+
             if ( i >= 0 && i < _n && j >= 0 && j < _m) {
                 return {i: i, j: j};
             } else {
                 return undefined;
             }
         }
-        
-        
+
+
         pixels = function (i, j) {
             return {
-                x: Z + _w * j,  
+                x: Z + _w * j,
                 y: Z + _w * i
             };
         }
-        
-        
+
+
         function invalidate() {
             if (!isNaN(_n) && !isNaN(_m) && !isNaN(_k) && _median) {
-                draw(_canvas, ctx, _m, _n, _k, _median, _w, pixels);   
+                draw(_canvas, ctx, _m, _n, _k, _median, _w, pixels);
             }
         }
-        
+
         _canvas.addEventListener("mousemove", function(evt) {
-            
+
             var u = indexes(evt.clientX, evt.clientY);
-            
+
             if (u) {
-                
+
                 invalidate();
                 highlight(ctx, u.i, u.j, _w, pixels);
-                
+
                 let grid_event = {
                     cell: u
                 };
-                
+
                 for( let i = 0; i < _move_callbacks.length ; i++) {
                     _move_callbacks[i](grid_event);
                 }
-                
+
             }
         });
-        
+
     }
-    
+
     return _Grid;
-    
+
 })();
