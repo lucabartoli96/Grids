@@ -261,13 +261,28 @@
         canvas.height = window.innerHeight;
         canvas.width = window.innerWidth;
 
-        var inputs = document.getElementsByTagName("input");
+        var inputs = document.getElementsByTagName("input"),
+            spinners = document.getElementsByClassName("spinner-button");
 
         ["n", "m", "k"].forEach(function(key) {
 
             inputs[key]
                 .addEventListener("input", function(evt) {
+                  inputs[key].focus()
                     grid[key] = Number(inputs[key].value);
+
+                    if ( key == 'm' ) {
+                      var max_k = grid.m-1;
+                      var act_k = grid.k;
+
+                      if ( act_k > max_k ) {
+                        inputs['k'].value = max_k
+                        grid.k = max_k
+                      }
+
+                      inputs['k'].setAttribute("max", max_k)
+                    }
+
                     brute_force(grid.n, grid.m, grid.k);
                     grid.median = {
                       "i" : floor((grid.n-1)/2),
@@ -277,12 +292,11 @@
 
         });
 
-
         var pixels = document.getElementsByName("pixels")[0];
 
         pixels
             .addEventListener("input", function(evt) {
-                grid.w = pixels.value;
+                grid.w = Number(pixels.value);
             });
 
 
@@ -294,6 +308,16 @@
                 //DO SOMETHING WITH i and j
 
         });
+
+        grid.n = Number(inputs['n'].value);
+        grid.m = Number(inputs['m'].value);
+        grid.k = Number(inputs['k'].value);
+        grid.w = Number(pixels.value);
+        brute_force(grid.n, grid.m, grid.k);
+        grid.median = {
+          "i" : floor((grid.n-1)/2),
+          "j" : median_EM_grid(grid.n, grid.m, grid.k)
+        };
     };
 
 }() );

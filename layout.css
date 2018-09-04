@@ -62,12 +62,12 @@ input {
 
 .inc-button {
   right: 0;
-  top: 40px;
+  top: 37px;
 }
 
 .dec-button {
   right: 0;
-  top: 50px;
+  top: 47px;
 }
 
 input[type=range] {
@@ -76,27 +76,40 @@ input[type=range] {
   float: left;
 }
 
-input:valid ~ label {
+/** FF*/
+input[type=range]:focus::-moz-range-progress {
+  background-color: #2196f3;
+}
+
+input[type=range]:focus::-moz-range-thumb {
+    border-color: #2196f3;
+}
+
+input[type=number]:valid ~ label {
   top: 0;
   font: 700 22px Roboto;
   color: rgba(255, 255, 255, 0.5);
 }
 
-input:focus {
+input[type=number]:focus {
   outline: none;
 }
 
-input:focus ~ label {
+input[type=number]:focus ~ label {
   top: 0;
   font: 700 22px Roboto;
   color: #2196f3;
 }
 
-input:focus ~ .bar:before {
+input[type=number]:focus ~ .spinner-button {
+  color: #2196f3;
+}
+
+input[type=number]:focus ~ .bar:before {
   transform: translateX(0);
 }
 
-input:-webkit-autofill {
+input[type=number]:-webkit-autofill {
   -webkit-box-shadow: 0 0 0px 1000px #333 inset;
   -webkit-text-fill-color: white !important;
 }
@@ -109,6 +122,7 @@ input:-webkit-autofill {
   transition: .3s ease;
   position: relative;
 }
+
 .bar:before {
   content: '';
   position: absolute;
