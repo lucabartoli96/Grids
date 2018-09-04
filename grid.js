@@ -18,16 +18,21 @@ var Grid = (function() {
         canvas.width = 2*Z + w * m;
         canvas.height = 2*Z + w * n;
 
+        console.log(w);
+
         var bottom = pixels(n, m);
 
         ctx.beginPath();
+
+        ctx.font= ceil(w/2) + "px Roboto";
 
         for (let i = 0; i <= n; i++) {
 
             let p = pixels(i, 0);
 
-            if (i != n) {
-                ctx.strokeText("" + i, 0, p.y + (13*w)/20);
+            if (/*w > 14 &&*/ i != n) {
+              ctx.strokeText("" + i, 0, p.y + (13*w)/20);
+              ctx.fillText("" + i, 0, p.y + (13*w)/20);
             }
 
             ctx.moveTo(p.x, p.y);
@@ -38,8 +43,9 @@ var Grid = (function() {
 
             let p = pixels(0, j);
 
-            if (j != m) {
-                ctx.strokeText("" + j, p.x + (6*w/20), (9*w)/20);
+            if (/*w > 14 &&*/ j != m) {
+              ctx.strokeText("" + j, p.x + (6*w/20), w/2 + 30/w);
+              ctx.fillText("" + j, p.x + (6*w/20),  w/2 + 30/w);
             }
 
             ctx.moveTo(p.x, p.y);
