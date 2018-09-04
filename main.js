@@ -10,7 +10,7 @@
         min = Math.min,
         max = Math.max;
 
-    var d, d_q, d_r, delta, monge;
+    var d;
 
     //Manhattan distance functions
 
@@ -274,7 +274,7 @@
                       "j" : median_EM_grid(grid.n, grid.m, grid.k)
                     };
             });
-            
+
         });
 
 
