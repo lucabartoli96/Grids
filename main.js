@@ -193,6 +193,11 @@
 
     function median_EM_grid(n, m, k) {
 
+
+        if ( k == 0 || k == m-1 ) {
+          return floor((m-1)/2);
+        }
+
         var D = [];
         let row = floor((n-1)/2);
 
