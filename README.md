@@ -1,5 +1,7 @@
 # Grids
 
+<image height=400 src="https://github.com/lucabartoli96/Grids/blob/master/screenshot.png">
+
 ### Introduction
 
 Grids is a simple Javascript Application made to develop and test an algorithm, for the one-median-problem on EM-Grids. The idea is taken from real-world problem, in which a drone has to deliver some items inside a rectangular area. It has a storage site, and flying from there it distributes all the items. The problem is to find out which is the best place where to storage site.
