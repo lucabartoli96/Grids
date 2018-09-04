@@ -155,6 +155,8 @@ var Grid = (function() {
 
             if (evt == "move") {
                 _move_callbacks.push(callback);
+            } else {
+              _canvas.addEventListener(evt, callback);
             }
         }
 
@@ -201,12 +203,10 @@ var Grid = (function() {
                 invalidate();
                 highlight(ctx, u.i, u.j, _w, pixels);
 
-                let grid_event = {
-                    cell: u
-                };
+                evt.cell = u
 
                 for( let i = 0; i < _move_callbacks.length ; i++) {
-                    _move_callbacks[i](grid_event);
+                    _move_callbacks[i](evt);
                 }
 
             }

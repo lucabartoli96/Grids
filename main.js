@@ -194,9 +194,7 @@
     function median_EM_grid(n, m, k) {
 
         var D = [];
-
-        let row = floor((n-1)/2),
-            C = d[row];
+        let row = floor((n-1)/2);
 
         for(let j = 0; j <= k; j++) {
 
@@ -262,7 +260,8 @@
         canvas.width = window.innerWidth;
 
         var inputs = document.getElementsByTagName("input"),
-            spinners = document.getElementsByClassName("spinner-button");
+            spinners = document.getElementsByClassName("spinner-button"),
+            result = document.getElementById("result");
 
         ["n", "m", "k"].forEach(function(key) {
 
@@ -305,9 +304,18 @@
                 var i = evt.cell.i,
                     j = evt.cell.j;
 
-                //DO SOMETHING WITH i and j
+                result.innerHTML = "d(" + i + ", " + j + ")="  + d[i][j].toFixed(3);
+                result.style.visibility = "visible";
+                result.style.opacity = 1;
+                result.style.left = (evt.x + 10) + "px";
+                result.style.top = (evt.y + 10) + "px";
 
         });
+
+        grid.addEventListener("mouseout", function (evt) {
+          result.style.visibility = "hidden";
+          result.style.opacity = 0;
+        })
 
         grid.n = Number(inputs['n'].value);
         grid.m = Number(inputs['m'].value);
