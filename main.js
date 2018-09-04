@@ -274,7 +274,7 @@
                       "j" : median_EM_grid(grid.n, grid.m, grid.k)
                     };
             });
-
+            
         });
 
 

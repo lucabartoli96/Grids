@@ -45,6 +45,31 @@ input {
   transition: .3s ease;
 }
 
+.spinner-button {
+  position: absolute;
+  cursor: default;
+  z-index: 2;
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.5);
+  background-color: #333;
+  width: 14.5px;
+  text-align: center;
+  margin: 0px;
+  pointer-events: none;
+  height: 10px;
+  line-height: 10px;
+}
+
+.inc-button {
+  right: 0;
+  top: 40px;
+}
+
+.dec-button {
+  right: 0;
+  top: 50px;
+}
+
 input[type=range] {
   width: 300px;
   margin-top: 20px;
