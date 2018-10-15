@@ -38,7 +38,7 @@ Let ![equation](https://latex.codecogs.com/gif.latex?d) be the distance as the d
 
 ![equation](https://latex.codecogs.com/gif.latex?t(v)&space;=&space;\sum\limits_{u&space;\in&space;V}&space;d(u,&space;v))
 
-The sum of distances from $v$ to all other nodes in the grid. Then the median is:
+The sum of distances from ![equation](https://latex.codecogs.com/gif.latex?v) to all other nodes in the grid. Then the median is:
 
 ![equation](https://latex.codecogs.com/gif.latex?Med(G)&space;=&space;argmin_{u&space;\in&space;V}&space;\{&space;d(u)&space;\})
 
